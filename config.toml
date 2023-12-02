@@ -1,0 +1,4 @@
+# Some simple tweaks to squeeze out potential extra performance (RUSTFLAGS)
+# https://nnethercote.github.io/perf-book/build-configuration.html
+[build]
+rustflags = ["-C", "target-cpu=native"]
