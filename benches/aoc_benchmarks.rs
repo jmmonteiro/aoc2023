@@ -22,6 +22,14 @@ pub fn all_days_benchmark(c: &mut Criterion) {
         b.iter(|| day02::Day.part2(black_box(&vec)))
     });
 
+    let vec = read_file("inputs/03/input.txt");
+    group.bench_function("Day 03 : Part 1", |b| {
+        b.iter(|| day03::Day.part1(black_box(&vec)))
+    });
+    group.bench_function("Day 03 : Part 2", |b| {
+        b.iter(|| day03::Day.part2(black_box(&vec)))
+    });
+
     group.finish();
 }
 criterion_group! {
