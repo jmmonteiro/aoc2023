@@ -2,6 +2,7 @@ use crate::utils::structs::{Answer, Solver};
 use regex::Regex;
 use std::{collections::HashSet, time::Instant};
 pub struct Day;
+use itertools::Itertools;
 
 impl Solver for Day {
     fn part1(&self, vec: &Vec<String>) -> Option<Answer> {
@@ -12,13 +13,10 @@ impl Solver for Day {
         let total: u32 = vec
             .into_iter()
             .map(|l| {
-                let numbers: Vec<u32> = re_number
-                    .find_iter(l)
-                    .skip(1)
-                    .map(|x| x.as_str().parse::<u32>().expect("Failed to parse number."))
-                    .collect();
+                let numbers: Vec<&str> =
+                    re_number.find_iter(l).skip(1).map(|x| x.as_str()).collect();
                 let diff: i32 =
-                    ((numbers.len() as i32) - HashSet::<u32>::from_iter(numbers).len() as i32) - 1;
+                    ((numbers.len() as i32) - HashSet::<&str>::from_iter(numbers).len() as i32) - 1;
                 if diff < 0 {
                     return 0;
                 }
@@ -38,18 +36,19 @@ impl Solver for Day {
             start_idx: usize,
             end_idx: usize,
             re_number: &Regex,
+            initial_size: i32,
         ) -> i32 {
             let mut i = start_idx;
             for l in cards[start_idx..end_idx].iter() {
                 total += 1;
 
-                let numbers: Vec<u32> = re_number
+                let reduced_size = re_number
                     .find_iter(l)
                     .skip(1)
-                    .map(|x| x.as_str().parse::<u32>().expect("Failed to parse number."))
-                    .collect();
-                let diff: i32 =
-                    (numbers.len() as i32) - (HashSet::<u32>::from_iter(numbers).len() as i32);
+                    .map(|x| x.as_str())
+                    .unique()
+                    .count() as i32;
+                let diff: i32 = initial_size - reduced_size;
 
                 if diff > 0 {
                     total = process_card(
@@ -58,6 +57,7 @@ impl Solver for Day {
                         (i + 1).min(cards.len() - 1),
                         (i + 1 + (diff as usize)).min(cards.len()),
                         re_number,
+                        initial_size,
                     );
                 }
                 i += 1;
@@ -65,7 +65,14 @@ impl Solver for Day {
             total
         }
 
-        let total = process_card(0, &vec, 0, vec.len(), &re_number);
+        // Get initial size
+        let initial_size = re_number
+            .find_iter(&vec[0])
+            .skip(1)
+            .map(|x| x.as_str())
+            .count();
+
+        let total = process_card(0, &vec, 0, vec.len(), &re_number, initial_size as i32);
 
         return Some(Answer::new(total.to_string(), time.elapsed()));
     }
