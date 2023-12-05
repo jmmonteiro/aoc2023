@@ -37,27 +37,21 @@ impl Solver for Day {
             end_idx: usize,
             re_number: &Regex,
             initial_size: i32,
+            card_results: &Vec<usize>,
         ) -> i32 {
             let mut i = start_idx;
-            for l in cards[start_idx..end_idx].iter() {
+            for _ in start_idx..end_idx {
                 total += 1;
 
-                let reduced_size = re_number
-                    .find_iter(l)
-                    .skip(1)
-                    .map(|x| x.as_str())
-                    .unique()
-                    .count() as i32;
-                let diff: i32 = initial_size - reduced_size;
-
-                if diff > 0 {
+                if card_results[i] > 0 {
                     total = process_card(
                         total,
                         &cards,
                         (i + 1).min(cards.len() - 1),
-                        (i + 1 + (diff as usize)).min(cards.len()),
+                        (i + 1 + card_results[i]).min(cards.len()),
                         re_number,
                         initial_size,
+                        &card_results,
                     );
                 }
                 i += 1;
@@ -72,7 +66,30 @@ impl Solver for Day {
             .map(|x| x.as_str())
             .count();
 
-        let total = process_card(0, &vec, 0, vec.len(), &re_number, initial_size as i32);
+        // Pre-compute card results
+        let card_results: Vec<usize> = vec
+            .into_iter()
+            .map(|l| {
+                let diff: i32 = (initial_size as i32)
+                    - re_number
+                        .find_iter(l)
+                        .skip(1)
+                        .map(|x| x.as_str())
+                        .unique()
+                        .count() as i32;
+                diff.max(0) as usize
+            })
+            .collect();
+
+        let total = process_card(
+            0,
+            &vec,
+            0,
+            vec.len(),
+            &re_number,
+            initial_size as i32,
+            &card_results,
+        );
 
         return Some(Answer::new(total.to_string(), time.elapsed()));
     }
