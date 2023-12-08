@@ -11,7 +11,8 @@ fn main() {
     total_algo_time += days::day02::Day.solve("inputs/02/input.txt");
     total_algo_time += days::day03::Day.solve("inputs/03/input.txt");
     total_algo_time += days::day04::Day.solve("inputs/04/input.txt");
-    total_algo_time += days::day05::Day.solve("inputs/05/input.txt");
+    // total_algo_time += days::day05::Day.solve("inputs/05/input.txt");
+    total_algo_time += days::day06::Day.solve("inputs/06/input.txt");
 
     println!(
         "Total algorithm solve time (excludes data reading time): {} s",
