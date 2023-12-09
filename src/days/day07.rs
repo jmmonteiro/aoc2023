@@ -24,55 +24,38 @@ impl Ord for Hand {
 
         // Make jokers equal to the most frequent card.
         if self.jokers {
-            // Edge case
-            if self.cards.iter().all(|x| *x == 1) {
-                if other.cards.iter().unique().count() > 1 {
-                    return Ordering::Greater;
-                }
-                if *other.cards.iter().next().unwrap() != 1 {
-                    return Ordering::Less;
-                } else {
-                    return Ordering::Equal;
-                }
-            }
-            if other.cards.iter().all(|x| *x == 1) {
-                if self.cards.iter().unique().count() > 1 {
-                    return Ordering::Less;
-                }
-                if *self.cards.iter().next().unwrap() != 1 {
-                    return Ordering::Greater;
-                } else {
-                    return Ordering::Equal;
+            if self_card_freq.contains_key(&1) {
+                let self_most_frequent_card = self_card_freq.iter().fold((0, 0), |acc, (c, f)| {
+                    if (*f > acc.1) && (**c != 1) {
+                        return (**c, *f);
+                    }
+                    acc
+                });
+                let n = *self_card_freq.get(&1).unwrap();
+                match self_card_freq.get_mut(&self_most_frequent_card.0) {
+                    Some(c) => {
+                        *c += n;
+                        self_card_freq.remove(&1);
+                    }
+                    None => {}
                 }
             }
-
-            match self_card_freq.get(&1) {
-                Some(n) => {
-                    let self_most_frequent_card =
-                        self_card_freq.iter().fold((0, 0), |acc, (c, f)| {
-                            if (*f > acc.1) && (**c != 1) {
-                                return (**c, *f);
-                            }
-                            acc
-                        });
-                    *self_card_freq.get_mut(&self_most_frequent_card.0).unwrap() += *n;
+            if other_card_freq.contains_key(&1) {
+                let other_most_frequent_card =
+                    other_card_freq.iter().fold((0, 0), |acc, (c, f)| {
+                        if (*f > acc.1) && (**c != 1) {
+                            return (**c, *f);
+                        }
+                        acc
+                    });
+                let n = *other_card_freq.get(&1).unwrap();
+                match other_card_freq.get_mut(&other_most_frequent_card.0) {
+                    Some(c) => {
+                        *c += n;
+                        other_card_freq.remove(&1);
+                    }
+                    None => {}
                 }
-                None => {}
-            }
-            match other_card_freq.get(&1) {
-                Some(n) => {
-                    let other_most_frequent_card =
-                        other_card_freq.iter().fold((0, 0), |acc, (c, f)| {
-                            if (*f > acc.1) && (**c != 1) {
-                                return (**c, *f);
-                            }
-                            acc
-                        });
-                    *other_card_freq
-                        .get_mut(&other_most_frequent_card.0)
-                        .unwrap() += *n;
-                }
-                None => {}
             }
         }
 
