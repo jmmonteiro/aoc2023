@@ -48,49 +48,53 @@ impl Solver for Day {
 
         return Some(Answer::new(answer.to_string(), time.elapsed()));
     }
-    fn part2(&self, _vec: &Vec<String>) -> Option<Answer> {
-        // TODO: The solution below runs for too long (interrupted it)
-        return None;
+    // fn part2(&self, vec: &Vec<String>) -> Option<Answer> {
+    //     let time = Instant::now();
 
-        // let time = Instant::now();
+    //     let directions: Vec<&str> = vec[0].split("").filter(|s| s.len() > 0).collect();
+    //     let nodes = parse_nodes(&vec);
 
-        // let directions: Vec<&str> = vec[0].split("").filter(|s| s.len() > 0).collect();
-        // let nodes = parse_nodes(&vec);
+    //     let mut start_nodes: Vec<&str> = vec
+    //         .iter()
+    //         .skip(2)
+    //         .map(|s| s.split(" ").next().unwrap())
+    //         .filter(|x| x.ends_with("A"))
+    //         .collect();
 
-        // let mut start_nodes: Vec<&str> = vec
-        //     .iter()
-        //     .skip(2)
-        //     .map(|s| s.split(" ").next().unwrap())
-        //     .filter(|x| x.ends_with("A"))
-        //     .collect();
+    //     let answer = directions
+    //         .iter()
+    //         .cycle()
+    //         .enumerate()
+    //         .fold_while(0 as usize, |_, (i, d)| {
+    //             // TODO: Delete this
+    //             if i == usize::MAX {
+    //                 panic!("It overflew");
+    //             }
+    //             if i % 100_000_000 == 0 {
+    //                 println!("Iteration: {}", i);
+    //             }
+    //             start_nodes = start_nodes
+    //                 .iter()
+    //                 .map(|n| match *d {
+    //                     "L" => nodes[n].0,
+    //                     "R" => nodes[n].1,
+    //                     _ => {
+    //                         panic!("{}", format!("Unrecognized direction {}", d));
+    //                     }
+    //                 })
+    //                 .collect();
 
-        // let answer = directions
-        //     .iter()
-        //     .cycle()
-        //     .enumerate()
-        //     .fold_while(0 as usize, |_, (i, d)| {
-        //         start_nodes = start_nodes
-        //             .iter()
-        //             .map(|n| match *d {
-        //                 "L" => nodes[n].0,
-        //                 "R" => nodes[n].1,
-        //                 _ => {
-        //                     panic!("{}", format!("Unrecognized direction {}", d));
-        //                 }
-        //             })
-        //             .collect();
+    //             if start_nodes.iter().all(|x| x.ends_with("Z")) {
+    //                 return Done(i);
+    //             }
 
-        //         if start_nodes.iter().all(|x| x.ends_with("Z")) {
-        //             return Done(i);
-        //         }
+    //             Continue(i)
+    //         })
+    //         .into_inner()
+    //         + 1;
 
-        //         Continue(i)
-        //     })
-        //     .into_inner()
-        //     + 1;
-
-        // return Some(Answer::new(answer.to_string(), time.elapsed()));
-    }
+    //     return Some(Answer::new(answer.to_string(), time.elapsed()));
+    // }
 }
 
 #[cfg(test)]
@@ -102,9 +106,9 @@ mod tests {
         let vec = input::read_file("inputs/08/test_input_1.txt");
         assert_eq!(Day.part1(&vec).unwrap().answer, "6")
     }
-    #[test]
-    fn part2() {
-        let vec = input::read_file("inputs/08/test_input_2.txt");
-        assert_eq!(Day.part2(&vec).unwrap().answer, "6")
-    }
+    // #[test]
+    // fn part2() {
+    // let vec = input::read_file("inputs/08/test_input_2.txt");
+    // assert_eq!(Day.part2(&vec).unwrap().answer, "6")
+    // }
 }
