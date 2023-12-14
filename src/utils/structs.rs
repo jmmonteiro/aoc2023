@@ -42,7 +42,7 @@ impl Answer {
 pub trait Solver {
     fn solve(&self, filepath: &str) -> Duration {
         let re = Regex::new(r"inputs/(\d+)/input.txt").unwrap();
-        let cap = re.captures(filepath).unwrap();
+        let cap = re.captures(filepath).expect("File not found.");
         assert!(cap.len() == 2);
         println!("------------- Day {} -------------", &cap[1]);
 
