@@ -126,16 +126,12 @@ impl Solver for Day {
         let (size, _, first_element) =
             cycle_detection::floyd((first_value, map.clone()), cycle_dish);
 
-        let total_cycles = (1_000_000_000 % size) + first_element + 2;
+        let total_cycles = ((1_000_000_000 - first_element) % size) + first_element;
 
         let mut load = first_value;
-        dbg!(load);
         for _ in 0..total_cycles {
             (load, map) = cycle_dish((load, map));
-            dbg!(load);
         }
-
-        dbg!(size, first_element, total_cycles);
 
         return Some(Answer::new(load.to_string(), time.elapsed()));
     }
