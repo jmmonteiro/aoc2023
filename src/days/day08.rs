@@ -1,3 +1,4 @@
+//! Haunted Wasteland
 use crate::utils::structs::{Answer, Solver};
 use core::panic;
 use itertools::Itertools;
@@ -48,53 +49,70 @@ impl Solver for Day {
 
         return Some(Answer::new(answer.to_string(), time.elapsed()));
     }
-    // fn part2(&self, vec: &Vec<String>) -> Option<Answer> {
-    //     let time = Instant::now();
+    fn part2(&self, vec: &Vec<String>) -> Option<Answer> {
+        let time = Instant::now();
 
-    //     let directions: Vec<&str> = vec[0].split("").filter(|s| s.len() > 0).collect();
-    //     let nodes = parse_nodes(&vec);
+        let directions: Vec<&str> = vec[0].split("").filter(|s| s.len() > 0).collect();
+        let nodes = parse_nodes(&vec);
 
-    //     let mut start_nodes: Vec<&str> = vec
-    //         .iter()
-    //         .skip(2)
-    //         .map(|s| s.split(" ").next().unwrap())
-    //         .filter(|x| x.ends_with("A"))
-    //         .collect();
+        let mut start_nodes: Vec<&str> = vec
+            .iter()
+            .skip(2)
+            .map(|s| s.split(" ").next().unwrap())
+            .filter(|x| x.ends_with("A"))
+            .collect();
 
-    //     let answer = directions
-    //         .iter()
-    //         .cycle()
-    //         .enumerate()
-    //         .fold_while(0 as usize, |_, (i, d)| {
-    //             // TODO: Delete this
-    //             if i == usize::MAX {
-    //                 panic!("It overflew");
-    //             }
-    //             if i % 100_000_000 == 0 {
-    //                 println!("Iteration: {}", i);
-    //             }
-    //             start_nodes = start_nodes
-    //                 .iter()
-    //                 .map(|n| match *d {
-    //                     "L" => nodes[n].0,
-    //                     "R" => nodes[n].1,
-    //                     _ => {
-    //                         panic!("{}", format!("Unrecognized direction {}", d));
-    //                     }
-    //                 })
-    //                 .collect();
+        let min_steps_to_end = start_nodes
+            .iter()
+            .map(|n| {
+                directions
+                    .iter()
+                    .cycle()
+                    .enumerate()
+                    .fold_while((0 as usize, n), |acc, (i, d)| {
+                        let next_node = match *d {
+                            "L" => &nodes[acc.1].0,
+                            "R" => &nodes[acc.1].1,
+                            _ => {
+                                panic!("{}", format!("Unrecognized direction {}", d));
+                            }
+                        };
 
-    //             if start_nodes.iter().all(|x| x.ends_with("Z")) {
-    //                 return Done(i);
-    //             }
+                        let output = (i, next_node);
 
-    //             Continue(i)
-    //         })
-    //         .into_inner()
-    //         + 1;
+                        if next_node.ends_with("Z") {
+                            return Done(output);
+                        }
+                        Continue(output)
+                    })
+                    .into_inner()
+                    .0
+                    + 1
+            })
+            .collect::<Vec<usize>>();
 
-    //     return Some(Answer::new(answer.to_string(), time.elapsed()));
-    // }
+        // Get Least Common Multiple for all pairs of start nodes
+        fn gcd(a: &mut usize, b: &mut usize) -> usize {
+            let mut t = *b;
+            while *b != 0 {
+                t = *b;
+                *b = *a % *b;
+                *a = t;
+            }
+            *a
+        }
+        fn lcm(a: usize, b: usize) -> usize {
+            let mut amut = a;
+            let mut bmut = b;
+            (a * b) / gcd(&mut amut, &mut bmut)
+        }
+
+        let answer = min_steps_to_end
+            .iter()
+            .fold(1, |a, b| lcm(a.clone(), b.clone()));
+
+        return Some(Answer::new(answer.to_string(), time.elapsed()));
+    }
 }
 
 #[cfg(test)]
@@ -106,9 +124,9 @@ mod tests {
         let vec = input::read_file("inputs/08/test_input_1.txt");
         assert_eq!(Day.part1(&vec).unwrap().answer, "6")
     }
-    // #[test]
-    // fn part2() {
-    // let vec = input::read_file("inputs/08/test_input_2.txt");
-    // assert_eq!(Day.part2(&vec).unwrap().answer, "6")
-    // }
+    #[test]
+    fn part2() {
+        let vec = input::read_file("inputs/08/test_input_2.txt");
+        assert_eq!(Day.part2(&vec).unwrap().answer, "6")
+    }
 }
