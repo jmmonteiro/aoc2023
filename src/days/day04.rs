@@ -1,3 +1,4 @@
+//! Scratchcards
 use crate::utils::structs::{Answer, Solver};
 use regex::Regex;
 use std::{collections::HashSet, time::Instant};
@@ -100,13 +101,23 @@ mod tests {
     use crate::days::day04::*;
     use crate::utils::input;
     #[test]
-    fn part1() {
+    fn part1_test_input() {
         let vec = input::read_file("inputs/04/test_input_1.txt");
         assert_eq!(Day.part1(&vec).unwrap().answer, "13")
     }
     #[test]
-    fn part2() {
+    fn part2_test_input() {
         let vec = input::read_file("inputs/04/test_input_2.txt");
         assert_eq!(Day.part2(&vec).unwrap().answer, "30")
+    }
+    #[test]
+    fn part1() {
+        let vec = input::read_file("inputs/04/input.txt");
+        assert_eq!(Day.part1(&vec).unwrap().answer, "20829")
+    }
+    #[test]
+    fn part2() {
+        let vec = input::read_file("inputs/04/input.txt");
+        assert_eq!(Day.part2(&vec).unwrap().answer, "12648035")
     }
 }

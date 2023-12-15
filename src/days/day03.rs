@@ -1,3 +1,4 @@
+//! Gear Ratios
 use crate::utils::structs::{Answer, Solver};
 use regex::Regex;
 use std::time::Instant;
@@ -152,13 +153,23 @@ mod tests {
     use crate::days::day03::*;
     use crate::utils::input;
     #[test]
-    fn part1() {
+    fn part1_test_input() {
         let vec = input::read_file("inputs/03/test_input_1.txt");
         assert_eq!(Day.part1(&vec).unwrap().answer, "4361")
     }
     #[test]
-    fn part2() {
+    fn part2_test_input() {
         let vec = input::read_file("inputs/03/test_input_1.txt");
         assert_eq!(Day.part2(&vec).unwrap().answer, "467835")
+    }
+    #[test]
+    fn part1() {
+        let vec = input::read_file("inputs/03/input.txt");
+        assert_eq!(Day.part1(&vec).unwrap().answer, "526404")
+    }
+    #[test]
+    fn part2() {
+        let vec = input::read_file("inputs/03/input.txt");
+        assert_eq!(Day.part2(&vec).unwrap().answer, "84399773")
     }
 }

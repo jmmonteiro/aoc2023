@@ -1,3 +1,4 @@
+//! Trebuchet?!
 use crate::utils::structs::{Answer, Solver};
 use regex::Regex;
 use std::time::Instant;
@@ -72,13 +73,24 @@ mod tests {
     use crate::days::day01::*;
     use crate::utils::input;
     #[test]
-    fn part1() {
+    fn part1_test_input() {
         let vec = input::read_file("inputs/01/test_input_1.txt");
         assert_eq!(Day.part1(&vec).unwrap().answer, "142")
     }
     #[test]
-    fn part2() {
+    fn part2_test_input() {
         let vec = input::read_file("inputs/01/test_input_2.txt");
         assert_eq!(Day.part2(&vec).unwrap().answer, "281")
+    }
+
+    #[test]
+    fn part1() {
+        let vec = input::read_file("inputs/01/input.txt");
+        assert_eq!(Day.part1(&vec).unwrap().answer, "54561")
+    }
+    #[test]
+    fn part2() {
+        let vec = input::read_file("inputs/01/input.txt");
+        assert_eq!(Day.part2(&vec).unwrap().answer, "54076")
     }
 }

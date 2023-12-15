@@ -1,3 +1,4 @@
+//! If You Give A Seed A Fertilizer
 use crate::utils::structs::{Answer, Solver};
 use std::{ops::Range, time::Instant};
 pub struct Day;
@@ -113,13 +114,24 @@ mod tests {
     use crate::days::day05::*;
     use crate::utils::input;
     #[test]
-    fn part1() {
+    fn part1_test_input() {
         let vec = input::read_file("inputs/05/test_input_1.txt");
         assert_eq!(Day.part1(&vec).unwrap().answer, "35")
     }
     #[test]
-    fn part2() {
+    fn part2_test_input() {
         let vec = input::read_file("inputs/05/test_input_1.txt");
         assert_eq!(Day.part2(&vec).unwrap().answer, "46")
     }
+    #[test]
+    fn part1() {
+        let vec = input::read_file("inputs/05/input.txt");
+        assert_eq!(Day.part1(&vec).unwrap().answer, "278755257")
+    }
+    // Too slow, improve algorithm first
+    // #[test]
+    // fn part2() {
+    // let vec = input::read_file("inputs/05/input.txt");
+    // assert_eq!(Day.part2(&vec).unwrap().answer, "26829166")
+    // }
 }

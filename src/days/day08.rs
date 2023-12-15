@@ -55,7 +55,7 @@ impl Solver for Day {
         let directions: Vec<&str> = vec[0].split("").filter(|s| s.len() > 0).collect();
         let nodes = parse_nodes(&vec);
 
-        let mut start_nodes: Vec<&str> = vec
+        let start_nodes: Vec<&str> = vec
             .iter()
             .skip(2)
             .map(|s| s.split(" ").next().unwrap())
@@ -93,7 +93,7 @@ impl Solver for Day {
 
         // Get Least Common Multiple for all pairs of start nodes
         fn gcd(a: &mut usize, b: &mut usize) -> usize {
-            let mut t = *b;
+            let mut t: usize;
             while *b != 0 {
                 t = *b;
                 *b = *a % *b;

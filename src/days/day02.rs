@@ -1,3 +1,4 @@
+//! Cube Conundrum
 use crate::utils::structs::{Answer, Solver};
 use regex::Regex;
 use std::time::Instant;
@@ -94,13 +95,23 @@ mod tests {
     use crate::days::day02::*;
     use crate::utils::input;
     #[test]
-    fn part1() {
+    fn part1_test_input() {
         let vec = input::read_file("inputs/02/test_input_1.txt");
         assert_eq!(Day.part1(&vec).unwrap().answer, "8")
     }
     #[test]
-    fn part2() {
+    fn part2_test_input() {
         let vec = input::read_file("inputs/02/test_input_1.txt");
         assert_eq!(Day.part2(&vec).unwrap().answer, "2286")
+    }
+    #[test]
+    fn part1() {
+        let vec = input::read_file("inputs/02/input.txt");
+        assert_eq!(Day.part1(&vec).unwrap().answer, "2879")
+    }
+    #[test]
+    fn part2() {
+        let vec = input::read_file("inputs/02/input.txt");
+        assert_eq!(Day.part2(&vec).unwrap().answer, "65122")
     }
 }
